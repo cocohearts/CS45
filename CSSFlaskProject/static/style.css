@@ -1,0 +1,80 @@
+body {
+    /* source for background: last picture from
+    https://tweakers.net/reviews/1759/10/starcraft-ii-wings-of-liberty-gallery.html */
+    background-color: black;
+    background-image: url(background.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    width: 800px;
+    margin: auto;
+    padding: 10px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+* {
+    color: rgb(207, 197, 197);
+}
+
+#container {
+    padding: 30px;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1 {
+    margin: 0;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    /* text-decoration: underline; */
+}
+
+h2 {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+#fancy-title {
+    font-family: Copperplate, "Copperplate Gothic Light", fantasy;
+    color: rgb(160, 160, 160);
+    font-size: 70px;
+    text-decoration-color: rgb(160, 160, 160);
+    text-decoration: underline;
+}
+
+img {
+    width: 390px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.model {
+    width: 317px;
+}
+
+.bio-upgrades {
+    display: block;
+    width: 50%;
+}
+
+.gallery {
+    width: 302px;
+}
+
+#gallery-div {
+    padding: 15px
+}
+
+table, th, td {
+    text-align: center;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid;
+}
+
+.my-list {
+    list-style: square;
+}

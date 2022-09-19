@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Alex's Blog: Terran Bio Guide</title>
+        <link rel="stylesheet" type="text/css" href="static/style.css">
+        <link rel="icon" type="image/x-icon" href="static/favicon.ico">
+    </head>
+    <body>
+        <div id = "container">
+            <!-- title -->
+            <h1>Starcraft 2 <span id = "fancy-title">Terran Bio</span></h1>
+
+            <!-- introduction -->
+            <div>
+                <h2>Introduction</h2>
+
+                <p>Starcraft 2 is a real-time strategy game.
+                    In such a genre of game, players mine resources, build armies, and attack each other in intense
+                    games that can last anywhere from 5 minutes to an hour, from start to finish.
+                    A <em>composition</em> in Starcraft is a collection of units that work well together and complement each other.
+                </p>
+
+                <p>
+                    According to Starcraft lore, there are three races competing for control of the galaxy.
+                    The Terrans are the humans, and one frequently seen composition is called <em>Terran bio.</em>
+                    Bio refers to the biological units of the Terran race, namely the marine and the marauder.
+                </p>
+            </div>
+            
+            <hr>
+
+            <!-- units; meat of information -->
+            <div>
+                <h2>Units</h2>
+
+                <p>Here are images of the marine and the marauder.</p>
+
+                <!-- images together -->
+                <p>
+                    <img src="static/marine.jpg" alt="Marine" class = "model">
+                    <img src="static/marauder.jpg" alt="Marauder" class = "model">
+                </p>
+
+                <p>The important things to know about the marine are:</p>
+
+                <ul class = "my-list">
+                    <li>Cheap</li>
+                    <li>Ranged</li>
+                    <li>Small hit box</li>
+                    <li>Small HP pool</li>
+                    <li>Vulnerable to splash damage</li>
+                    <li>Attacks quickly, so affected very much by <em>upgrades</em></li>
+                </ul>
+
+                <p>The important things to know about the marauder are:</p>
+
+                <ul class = "my-list">
+                    <li>Good deal more expensive than marine</li>
+                    <li>Ranged</li>
+                    <li>Bonus damage against armored</li>
+                    <li>Had large HP pool and medium hit box, so good for soaking up splash damage</li>
+                    <li>Doesn't attack as quickly as the marine</li>
+                </ul>
+
+                <p>Here are the exact stats of the marine and the marauder.</p>
+
+                <table>
+                    <tr>
+                        <th>Marine</th> 
+                        <th>Marauder</th>
+                    </tr>
+                    <tr>
+                        <td>Built from Barracks</td>
+                        <td>Built from Barracks with Tech Lab</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            50 Minerals
+                        </td>
+                        <td>
+                            100 Minerals, 25 Vespene
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>45 HP (+10)</td>
+                        <td>125 HP</td>
+                    </tr>
+                    <tr>
+                        <td>Light, Biological</td>
+                        <td>Armored, Biological</td>
+                    </tr>
+                    <tr>
+                        <td>Damage: 6 (+1)</td>
+                        <td>Damage: 10 (+1), bonus +10 vs Armored</td>
+                    </tr>
+                    <tr>
+                        <td>Attacks once every 0.61s (-0.2)</td>
+                        <td>Attacks once every 1.07s (-0.36)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- brief information about upgrades -->
+            <h2>Upgrades and Upgrade Theory</h2>
+            <div>
+                <p class = "underline">
+                    The Marine and Marauder benefit from important upgrades. 
+                    Combat Shield gives Marines an extra 10 HP, 
+                    and Stimpack gives biological units the ability to sacrifice some health
+                    for a temporary boost in movement speed and attack speed.
+                    There is one additional unit, the Medivac, that can heal Bio units, and that is included in the image at the bottom of the page.
+                </p>
+
+                <!-- image source: https://liquipedia.net/starcraft2/Terran_Upgrades -->
+                <div>
+                    <img src = "static/CombatShield.png" alt = "Combat Shield" class = "bio-upgrades">
+                    <img src = "static/Stimpack.png" alt = "Stimpack" class = "bio-upgrades">
+                    <img src = "static/InfantrypOne.png" alt = "Infantry +1" class = "bio-upgrades">
+                </div>
+
+                <p>
+                    Upgrades are a very important part of Starcraft, and Terran bio in particular.
+                    The full list of Terran upgrades can be found <a href="https://liquipedia.net/starcraft2/Terran_Upgrades">here</a>.
+                </p>
+
+                <p>
+                    When an upgrade finishes, it applies to all of your standing units at the same time.
+                    This is very important; for Terran Bio, upgrades affect units even more, so Terran Bio 
+                    gets a massive power spike when upgrades finishes.
+                    Thus, Terran Bio build orders center around attacking
+                    exactly when some important upgrade finishes, such as Combat/Stim
+                    or +2/+2.
+                </p>
+            </div>
+
+            <hr>
+
+            <div>
+                <h2>More Pictures</h2>
+
+                <div id = "gallery-div">
+                    <!-- source: https://www.reddit.com/r/allthingsprotoss/comments/f8hxxy/how_do_you_deal_with_bio_terran_in_gold/ -->
+                    <img src = "static/battle1.png" alt = "Terran bio army with Battlecruisers" class = "gallery">
+                    <!-- source: https://pc-games.wonderhowto.com/how-to/defeat-terran-bio-ball-build-with-zerg-starcraft-2-multiplayer-390484/ -->
+                    <img src = "static/battle2.png" alt = "Bio army vs infestors" class = "gallery">
+                    <!-- source: http://starcraft2calculator.appspot.com/guide/781002/Terran-Core-Compositions -->
+                    <img src = "static/army1.jpeg" alt = "Ghost army" class = "gallery">
+                    <!-- source: https://i.stack.imgur.com/NFxo7.jpg -->
+                    <img src = "static/army2.jpeg" alt = "Bio army on the move" class = "gallery">
+                    <!-- source: https://www.scan.co.uk/images/homepages/progaming/guides_Starcraft-TerranBioMech.jpg -->
+                    <img src = "static/army3.jpeg" alt = "Tank marine army" class = "gallery">
+                    <!-- source: https://news.blizzard.com/en-us/starcraft2/5740272/game-guide-terran-unit-combos -->
+                    <img src = "static/army4.jpg" alt = "Bio army with banshees" class = "gallery">
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
