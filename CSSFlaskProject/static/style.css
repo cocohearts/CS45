@@ -17,8 +17,10 @@ body {
 }
 
 #container {
+    /* text container formatting */
     padding: 30px;
     height: 100%;
+    /* applies transparency */
     background-color: rgba(0,0,0,0.6);
     width: 80%;
     margin-left: auto;
@@ -28,14 +30,19 @@ body {
 h1 {
     margin: 0;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    /* text-decoration: underline; */
+    /* Rahul Sundaresan recommended that I center my title */
+    text-align: center;
 }
 
 h2 {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    /* Rahul also suggested that I center and underline my section headers */
+    text-decoration: underline;
+    text-align: center;
 }
 
 #fancy-title {
+    /* formatting for fancy part of title */
     font-family: Copperplate, "Copperplate Gothic Light", fantasy;
     color: rgb(160, 160, 160);
     font-size: 70px;
@@ -68,6 +75,7 @@ img {
 }
 
 table, th, td {
+    /* table formatting */
     text-align: center;
     width: 50%;
     margin-left: auto;

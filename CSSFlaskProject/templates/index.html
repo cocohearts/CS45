@@ -6,6 +6,7 @@
         <link rel="icon" type="image/x-icon" href="static/favicon.ico">
     </head>
     <body>
+        <!-- container for text body and background -->
         <div id = "container">
             <!-- title -->
             <h1>Starcraft 2 <span id = "fancy-title">Terran Bio</span></h1>
@@ -29,20 +30,20 @@
             
             <hr>
 
-            <!-- units; meat of information -->
+            <!-- units; first section -->
             <div>
                 <h2>Units</h2>
 
                 <p>Here are images of the marine and the marauder.</p>
 
-                <!-- images together -->
+                <!-- unit images, inline -->
                 <p>
                     <img src="static/marine.jpg" alt="Marine" class = "model">
                     <img src="static/marauder.jpg" alt="Marauder" class = "model">
                 </p>
 
                 <p>The important things to know about the marine are:</p>
-
+                <!-- custom list class -->
                 <ul class = "my-list">
                     <li>Cheap</li>
                     <li>Ranged</li>
@@ -103,12 +104,13 @@
             <!-- brief information about upgrades -->
             <h2>Upgrades and Upgrade Theory</h2>
             <div>
-                <p class = "underline">
+                <p>
                     The Marine and Marauder benefit from important upgrades. 
                     Combat Shield gives Marines an extra 10 HP, 
                     and Stimpack gives biological units the ability to sacrifice some health
                     for a temporary boost in movement speed and attack speed.
-                    There is one additional unit, the Medivac, that can heal Bio units, and that is included in the image at the bottom of the page.
+                    There is one additional unit, the Medivac, that can heal Bio units, and that is included in some of the images
+                    at the bottom of the page.
                 </p>
 
                 <!-- image source: https://liquipedia.net/starcraft2/Terran_Upgrades -->
@@ -137,7 +139,7 @@
 
             <div>
                 <h2>More Pictures</h2>
-
+                <!-- image gallery -->
                 <div id = "gallery-div">
                     <!-- source: https://www.reddit.com/r/allthingsprotoss/comments/f8hxxy/how_do_you_deal_with_bio_terran_in_gold/ -->
                     <img src = "static/battle1.png" alt = "Terran bio army with Battlecruisers" class = "gallery">
