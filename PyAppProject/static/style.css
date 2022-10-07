@@ -1,0 +1,65 @@
+body
+{
+    width: 600px;
+    margin: auto;
+    padding: 20px;
+    font-size: 20px;
+    /* source: https://www.thekitchn.com/roast-beef-recipe-23254875 */
+    background-image: url("background.png");
+    background-attachment: fixed;
+    font-family: Robot, Arial, sans-serif;
+}
+
+.background
+{
+    border-radius: 30px;
+    padding: 20px;
+    background-color: rgba(245, 171, 102, 0.6);
+}
+
+/* Container for each block in the form */
+.container
+{
+    border-radius: 10px;
+    padding: 20px;
+    background-color: white;
+}
+
+.spacer
+{
+    padding-top: 20px;
+}
+
+input
+{
+    padding: 5px;
+    margin-bottom: 15px;
+}
+
+h1
+{
+    text-align: center;
+}
+
+#subtext
+{
+    color: #5F6368;
+    font-size: 12px;
+}
+
+/* div for centering submit button */
+.submit
+{
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#submitbutton
+{
+    border-radius: 20px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
