@@ -1,0 +1,62 @@
+{% extends "base.html.j2" %}
+
+{% block title %}
+    Carnivore's Order Form
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+    <h1> Carnivore's Order Form </h1>
+
+    <hr>
+
+    <p id="subtext"> Your name and information will be saved on our database. </p>
+    </div>
+
+    {# spacer adds space between blocks #}
+    <div class="spacer"> </div>
+    
+    <form method="POST" action="results">
+        <div class="container">
+            <p> Full name: </p>
+
+            <input type="text" name="fullname" required>
+
+            <p> What meat would you like today? </p>
+
+            <input type="radio" name="animal" value="beef" required> Beef
+            <input type="radio" name="animal" value="pork" required> Pork
+            <input type="radio" name="animal" value="chicken" required> Chicken
+
+            <p> Which method of cooking would you prefer? </p>
+
+            <input type="radio" name="method" value="roast" required> Roasted
+            <input type="radio" name="method" value="grilled" required> Grilled
+            <input type="radio" name="method" value="broiled" required> Broiled
+
+            <p> How rare would you like your roast, from 1 being raw, to 9 being well done? </p>
+            
+            <input type="number" name="rareness" min="1" max="9" step="1" required>
+
+            <p> What time would you like your meal to arrive? </p>
+
+            <input type="datetime-local" name="delivery_time" min="{{now_string}}" required>
+
+            <p> Choose some flavors: </p>
+
+            <input type="checkbox" name="flavor" value="sweet"> Sweet
+            <input type="checkbox" name="flavor" value="salty"> Salty
+            <input type="checkbox" name="flavor" value="spicy"> Spicy
+        </div>
+
+        <div class="spacer"> </div>
+
+        <div class="submit">
+            <input id="submitbutton" type="submit" value="Submit!">
+        </div>
+
+        <div class="spacer"> </div>
+    </form>
+
+{% endblock %}

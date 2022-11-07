@@ -1,0 +1,22 @@
+{% extends "base.html.j2" %}
+
+{% block title %}
+    Carnivore's Order Form—Past Orders
+{% endblock %}
+
+{% block body %}
+    {# title block #}
+    <div class='container'>
+        <h1> {{fullname|e}}'s Past Orders </h1>
+    </div>
+    
+    <div class='spacer'></div>
+    
+    {% for order in orders %}
+        <div class='container'>
+            <p> {{order|e}} </p>
+        </div>
+        <div class='spacer'> </div>
+    {% endfor %}
+    
+{% endblock %}

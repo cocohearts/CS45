@@ -1,0 +1,33 @@
+{% extends "base.html.j2" %}
+
+{% block title %}
+    Carnivore's Order Form
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1> Form Result </h1>
+        <hr>
+        {# checking for name #}
+        {% if name|length == 0 %}
+            <p> No name! Please try again. </p>
+
+        {% else %}
+            <p>
+                Hello, <b>{{name|e}}</b>!
+            </p>
+
+            
+            {# checking for error #}
+            {% if missing_val %}
+                <p> {{msg|e}} Please submit the form again. </p>
+            {% else %}
+                <p> We'll get you a {{msg|e}}, arriving at <b>{{time|e}}</b>. </p>
+
+                <p><a href='{{orders_url|e}}'> See your past orders </a></p>
+            {% endif %}
+            <p><a href='.'> Submit another response </a></p>
+        {% endif %}
+
+    </div>
+{% endblock %}
