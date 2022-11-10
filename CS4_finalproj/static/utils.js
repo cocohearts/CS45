@@ -75,8 +75,16 @@ class CanvasSpecs {
             'f' : 4,
         }
         this.keys = ['a', 's', 'd', 'f'];
-        
+        this.score = 0;
     }
 }
 
-export { Tile, Button, load_tiles };
+function show_results(score) {
+    var resultsForm = document.getElementById("results_form");
+    var resultsButton = document.getElementById("results_button");
+    
+    resultsForm.style.display = 'block';
+    resultsButton.setAttribute("value", score);
+}
+
+export { Tile, Button, load_tiles, CanvasSpecs, show_results };

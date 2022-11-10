@@ -1,15 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.js"></script>
-    {# <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/addons/p5.sound.min.js"></script> #}
-    <link rel="stylesheet" type="text/css" href="static/style.css">
-    <meta charset="utf-8" />
+{% extends 'base.html.j2' %}
 
-  </head>
-  <body>
+{% block title %}
+    Title
+{% endblock %}
+
+{% block body %}
     <p>
-        <script src="./static/canvas.js"></script>
+        <div class="game_container">
+            <script type="module" src="./static/canvas.js"></script>
+        </div>
     </p>
-  </body>
-</html>
+    <p>
+        <form id = "results_form" action="results" method="POST">
+            <button id = "results_button" type="submit" name="score" value=0 class="link-button">
+                Link to results page
+            </button>
+        </form>
+    </p>
+{% endblock %}

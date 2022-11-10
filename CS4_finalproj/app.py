@@ -13,3 +13,8 @@ mysql = MySQL(app)
 @app.route('/')
 def index():
     return render_template('index.html.j2')
+
+@app.route('/results', methods=['POST'])
+def results():
+    score = request.values.get("score")
+    return render_template('results.html.j2',score=score)

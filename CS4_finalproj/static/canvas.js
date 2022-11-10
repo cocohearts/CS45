@@ -1,70 +1,81 @@
 // four buttons
-import { Tile, Button, load_tiles } from './utils.js';
+import { Tile, Button, load_tiles, CanvasSpecs, show_results } from './utils.js';
 
 // const x = 600;
 // let x = Math.min(window.windowWidth, window.windowHeight);
 // console.log(x);
-let canvas_dim = [];
+
+let myCanvas = new CanvasSpecs();
+var initiated = false;
+// let finished = new Boolean(false);
+
+let CanvasSize = {
+    size : 0
+};
+
 window.setup = function() {
-    
-    // console.log(x);
-    // let x = 400;
-    // createCanvas(x, x);
-    canvas_dim = Math.min(windowWidth, windowHeight) / 2;
+    var canvas_dim = Math.min(windowWidth, windowHeight) * 0.7;
+    myCanvas.size = canvas_dim+0;
+    CanvasSize.size = canvas_dim;
+    console.log(canvas_dim);
+    console.log(myCanvas.size);
     createCanvas(canvas_dim, canvas_dim);
 }
 
-var score = 0;
-const keys = ['a', 's', 'd', 'f'];
-const key_dict = {
-    'a' : 1,
-    's' : 2,
-    'd' : 3,
-    'f' : 4,
-};
-
-const color_dict = {
-    1 : 'rgb(228,95,95)',
-    2 : 'red',
-    3 : 'yellow',
-    4 : 'cyan'
-}
-
-const button_color_list = [
-    'red',
-    'yellow',
-    'green',
-    'blue'
-]
-
-// const m = canvas_dim/5;
-// const b = 0;
-// const button_height = 0.75 * canvas_dim;
-// const button_rad = 0.12 * canvas_dim;
-// const tile_size = 0.06 * canvas_dim;
+console.log(myCanvas.size);
 
 const m = 80;
 const b = 0;
-const button_height = Math.floor(0.75 * canvas_dim);
-console.log(button_height);
-console.log(canvas_dim);
+// const button_height = Math.floor(0.75 * myCanvas.size);
+// const button_height = 300;
+// console.log(button_height);
+console.log(myCanvas.size);
 const button_rad = 48;
 const tile_size = 24;
 
 var tileArray = [];
 var buttonArray = [];
 
+myCanvas.size = 400;
+
 for (let index = 1; index <= 4; index++) {
-    buttonArray.push(new Button(index,button_height,button_color_list[index-1],m,b,button_rad));
+    buttonArray.push(new Button(index,0,myCanvas.button_color_list[index-1],0,0,0));
 }
-
 for (let int_tile_val of load_tiles()) {
-    tileArray.push(new Tile(int_tile_val[0],int_tile_val[1],color_dict[int_tile_val[0]],5,m,b,tile_size));
+    tileArray.push(new Tile(int_tile_val[0],int_tile_val[1],myCanvas.color_dict[int_tile_val[0]],5,0,0,0));
 }
 
-// console.log(tileArray);
+function size_initalize() {
+    let size = myCanvas.size;
+    let m = myCanvas.size/5;
+    // let m = 1;
+    let b = 0;
+    let button_height = 0.75 * myCanvas.size;
+    // let button_height = 300;
+    let button_size = 0.12 * myCanvas.size;
+    let tile_size = 0.06 * myCanvas.size;
+    let tile_speed = 0.0125 * myCanvas.size;
+    for (let tile of tileArray) {
+        tile.m = m;
+        tile.b = b;
+        tile.size = tile_size;
+        tile.speed = tile_speed;
+    }
+    for (let button of buttonArray) {
+        button.m = m;
+        button.b = b;
+        button.size = button_size;
+        button.y = button_height;
+    }
+}
 
 window.draw = function() {
+    console.log(initiated);
+    if(!initiated) {
+        initiated = true;
+        size_initalize();
+        return;
+    }
     background('black');
     
     for (let button of buttonArray) {
@@ -76,22 +87,26 @@ window.draw = function() {
             tile.tileDraw();
         }
     }
+    else {
+        show_results(Math.round(myCanvas.score));
+    }
     fill(0, 102, 153);
     textSize(32);
-    text(Math.round(score).toString(),10,30);
+    text(Math.round(myCanvas.score).toString(),10,30);
 }
 
 window.keyTyped = function() {
-    if (!(keys.includes(window.key))) {
+    if (!(myCanvas.keys.includes(window.key))) {
         return;
     }
 
     if (tileArray.at(-1).y > height) {
         return;
     }
+    let button_height = buttonArray[0].y;
     var nearby_indices = [];
     for (let index = 0; index < tileArray.length; index++) {
-        if (tileArray[index].x === key_dict[window.key]) {
+        if (tileArray[index].x === myCanvas.key_dict[window.key]) {
             if (tileArray[index].y >= button_height) {
                 if (nearby_indices.length === 0) {
                     nearby_indices.push(index);
@@ -112,5 +127,5 @@ window.keyTyped = function() {
     }
     let distance = Math.min(...distances);
     
-    score += Math.min(100/(distance+5)-5);
+    myCanvas.score += 300/(distance+5)-5;
 }

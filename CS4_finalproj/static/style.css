@@ -18,4 +18,22 @@ html, body {
     padding: 0;
     height: 100%;
     background-color: black;
+    color: whitesmoke;
 }
+
+#results_form {
+    display: none;
+    background: none;
+    border: none;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: serif;
+  }
+  #results_form:focus {
+    outline: none;
+  }
+  #results_form:active {
+    color:red;
+  }
