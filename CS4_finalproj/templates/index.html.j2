@@ -5,16 +5,15 @@
 {% endblock %}
 
 {% block body %}
-    <p>
-        <div class="game_container">
-            <script type="module" src="./static/canvas.js"></script>
-        </div>
-    </p>
-    <p>
-        <form id = "results_form" action="results" method="POST">
-            <button id = "results_button" type="submit" name="score" value=0 class="link-button">
-                Link to results page
-            </button>
-        </form>
-    </p>
+    <div class="game_container" id="game_container"></div>
+
+    <div id="results_container">
+    <form id = "results_form" action="results" method="POST">
+        <button id = "results_button" type="submit" name="score" value=0 class="link-button">
+            Link to results page
+        </button>
+    </form>
+    </div>
+
+    <script type="module" src="./static/canvas.js"></script>
 {% endblock %}

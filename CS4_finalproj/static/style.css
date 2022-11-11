@@ -10,7 +10,24 @@
 
 .game_container
 {
+    /* margin: auto;
+     */
+     /* margin: 0;
+     display: flex;
+   
+    justify-content: center;
+    align-self: center; */
+    /* position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: 50%;
+    padding: 20px;
+    text-align: center; */
     margin: auto;
+    width: 60%;
+    padding: 0px;
 }
 
 html, body {
@@ -23,17 +40,22 @@ html, body {
 
 #results_form {
     display: none;
-    background: none;
+  }
+
+#results_button {
+    background-color: #4CAF50; /* Green */
     border: none;
-    color: blue;
-    text-decoration: underline;
-    cursor: pointer;
-    font-size: 1em;
-    font-family: serif;
-  }
-  #results_form:focus {
-    outline: none;
-  }
-  #results_form:active {
-    color:red;
-  }
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+#results_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70px;
+}

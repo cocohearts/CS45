@@ -76,6 +76,7 @@ class CanvasSpecs {
         }
         this.keys = ['a', 's', 'd', 'f'];
         this.score = 0;
+        this.started = false;
     }
 }
 
@@ -87,4 +88,28 @@ function show_results(score) {
     resultsButton.setAttribute("value", score);
 }
 
-export { Tile, Button, load_tiles, CanvasSpecs, show_results };
+function size_initalize(myCanvasSpecs, tileArray, buttonArray) {
+    let size = myCanvasSpecs.size;
+    let m = size/5;
+    let b = 0;
+    let button_height = 0.6 * size;
+    let button_size = 0.12 * size;
+    let tile_size = 0.06 * size;
+    let tile_speed = 0.0125 * size;
+    let height_factor = 0.0025 * size;
+    for (let tile of tileArray) {
+        tile.m = m;
+        tile.b = b;
+        tile.size = tile_size;
+        tile.speed = tile_speed;
+        tile.y *= height_factor;
+    }
+    for (let button of buttonArray) {
+        button.m = m;
+        button.b = b;
+        button.size = button_size;
+        button.y = button_height;
+    }
+}
+
+export { Tile, Button, load_tiles, CanvasSpecs, show_results, size_initalize };
