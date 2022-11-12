@@ -5,15 +5,15 @@
 {% endblock %}
 
 {% block body %}
-    <div class="game_container" id="game_container"></div>
+    <div id="game_container"></div>
 
-    <div id="results_container">
     <form id = "results_form" action="results" method="POST">
+    <a id="return_link" href="./">Restart</a>
         <button id = "results_button" type="submit" name="score" value=0 class="link-button">
-            Link to results page
+            See how you stack up!
         </button>
+        <div id="horizontal_spacer"></div>
     </form>
-    </div>
 
     <script type="module" src="./static/canvas.js"></script>
 {% endblock %}

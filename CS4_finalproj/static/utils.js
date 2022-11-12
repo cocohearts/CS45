@@ -7,32 +7,61 @@ class Tile {
         this.m = m;
         this.b = b;
         this.size = size;
+        this.disappeared = false;
     }
   
     tileUpdate() {
         this.y += this.speed;
     }
     
-    tileDraw() {
-        if (0 < this.y < height) {
-        fill(this.col);
-        ellipse(this.x * this.m + this.b, this.y, this.size, this.size);
+    tileDraw(height) {
+        if (0 < this.y && this.y < height+this.size && !this.disappeared) {
+            fill(this.col);
+            circle(this.x * this.m + this.b, this.y, this.size);
+            erase();
+            circle(this.x * this.m + this.b, this.y, this.size/2);
+            noErase();
         }
     }
 }
 
 class Button {
-    constructor(x, y, col, m, b, size) {
+    constructor(x, col) {
         this.x = x;
-        this.y = y;
+        this.y = 0;
         this.col = col;
-        this.m = m;
-        this.b = b;
-        this.size = size;
+        this.m = 0;
+        this.b = 0;
+        this.realsize = 0;
+        this.size = 0;
+        this.flair = 0;
     }
     buttonDraw() {
+        // flair_len must be odd
+        let flair_len = 7;
+        let flair_factor = 1.1;
+        if (this.flair > 0) {
+            if (this.flair < flair_len) {
+                if (this.flair <= flair_len/2) {
+                    this.size *= flair_factor;
+                } else {
+                    this.size /= flair_factor;
+                }
+                this.flair++;
+            }
+            else {
+                this.flair = 0;
+            }
+        }
+
         fill(this.col);
-        ellipse(this.x * this.m + this.b, this.y, this.size, this.size);
+        circle(this.x * this.m + this.b, this.y, this.size);
+        // fill(0);
+        erase();
+        circle(this.x * this.m + this.b, this.y, 2 * this.size / 3);
+        noErase();
+        fill(this.col);
+        circle(this.x * this.m + this.b, this.y, this.size / 3);
     }
 }
 
@@ -57,16 +86,16 @@ function load_tiles() {
 class CanvasSpecs {
     constructor() {
         this.color_dict = {
-            1 : 'rgb(228,95,95)',
-            2 : 'red',
-            3 : 'yellow',
-            4 : 'cyan'
+            1 : '#FA9FB4',
+            2 : '#A2FFC5',
+            3 : '#FDFDCB',
+            4 : '#C0D0F5'
         }
         this.button_color_list = [
-            'red',
-            'yellow',
-            'green',
-            'blue'
+            '#FF184E',
+            '#25E525',
+            '#F7F713',
+            '#004DFF'
         ]
         this.key_dict = {
             'a' : 1,
@@ -77,26 +106,30 @@ class CanvasSpecs {
         this.keys = ['a', 's', 'd', 'f'];
         this.score = 0;
         this.started = false;
+        this.finished = false;
     }
 }
 
 function show_results(score) {
     var resultsForm = document.getElementById("results_form");
+    var returnLink = document.getElementById("return_link");
     var resultsButton = document.getElementById("results_button");
     
-    resultsForm.style.display = 'block';
+    resultsButton.style.display = 'block';
+    returnLink.style.display = 'block';
     resultsButton.setAttribute("value", score);
 }
 
 function size_initalize(myCanvasSpecs, tileArray, buttonArray) {
-    let size = myCanvasSpecs.size;
-    let m = size/5;
+    let width = myCanvasSpecs.width;
+    let height = myCanvasSpecs.height;
+    let m = width/5;
     let b = 0;
-    let button_height = 0.6 * size;
-    let button_size = 0.12 * size;
-    let tile_size = 0.06 * size;
-    let tile_speed = 0.0125 * size;
-    let height_factor = 0.0025 * size;
+    let button_height = 0.75 * height;
+    let button_size = 0.12 * width;
+    let tile_size = 0.08 * width;
+    let tile_speed = 0.0125 * width;
+    let height_factor = 0.0025 * height;
     for (let tile of tileArray) {
         tile.m = m;
         tile.b = b;
