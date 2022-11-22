@@ -1,0 +1,17 @@
+{% extends "base.html.j2" %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block body %}
+<h1>
+User Profile
+</h1>
+{% if loggedIn %}
+Your email is {{email}}.
+{% else %}
+Not logged in. Log in <a id="login_link" href="./login">here.</a>
+{% endif %}
+
+{% endblock %}

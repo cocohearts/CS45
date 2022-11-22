@@ -67,13 +67,11 @@ class Button {
 
 function load_tiles() {
     var result = null;
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", './static/tiles.txt', false);
-    xmlhttp.send();
-    if (xmlhttp.status==200) {
-        result = xmlhttp.responseText;
-    }
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", './static/tiles.txt', false);
+    xhttp.send();
     var tile_vals = [];
+    result = xhttp.responseText;
     for (var tile_line of result.split(/\r?\n/)) {
         if (tile_line.length >= 1) {
             let str_tile_val = tile_line.split(" ");
@@ -83,6 +81,18 @@ function load_tiles() {
     return tile_vals;
 }
 
+function log_out() {
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.open("POST","/oauth2",true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.send();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            window.location.assign('/');
+        }
+    }
+}
 class CanvasSpecs {
     constructor() {
         this.color_dict = {
@@ -114,8 +124,11 @@ function show_results(score) {
     var resultsForm = document.getElementById("results_form");
     var returnLink = document.getElementById("return_link");
     var resultsButton = document.getElementById("results_button");
+    var spacer = document.getElementById("horizontal_spacer")
     
+    spacer.style.display = 'none';
     resultsButton.style.display = 'block';
+    resultsButton.innerHTML = 'See how you stack up!'
     returnLink.style.display = 'block';
     resultsButton.setAttribute("value", score);
 }
@@ -123,8 +136,8 @@ function show_results(score) {
 function size_initalize(myCanvasSpecs, tileArray, buttonArray) {
     let width = myCanvasSpecs.width;
     let height = myCanvasSpecs.height;
-    let m = width/5;
-    let b = 0;
+    let m = width * 0.24;
+    let b = width * -0.1;
     let button_height = 0.75 * height;
     let button_size = 0.12 * width;
     let tile_size = 0.08 * width;
@@ -145,4 +158,22 @@ function size_initalize(myCanvasSpecs, tileArray, buttonArray) {
     }
 }
 
-export { Tile, Button, load_tiles, CanvasSpecs, show_results, size_initalize };
+function postScores(score) {
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.open("POST","/savescore",true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    // let xparams = `{
+    //     "score" : ${score}
+    // }`;
+    xhttp.send("score="+score);
+
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log("score_post" + this.responseText);
+        }
+    }
+}
+
+export { Tile, Button, load_tiles, CanvasSpecs, show_results, size_initalize, postScores, log_out };

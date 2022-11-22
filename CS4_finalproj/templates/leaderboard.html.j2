@@ -1,0 +1,25 @@
+{% extends "base.html.j2" %}
+
+{% block title %}
+    Leaderboard
+{% endblock %}
+
+{% block body %}
+<h1>
+Leaderboard
+</h1>
+
+<p>
+    Your score was {{score}}.
+    {% if loggedIn %}
+        This was your {{play_ordinal}} playthrough!
+    {% else %}
+        Log in to save your scores and see past scores.
+    {% endif %}
+</p>
+
+{% block scripts %}
+    <script src="./static/login.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+{% endblock %}
+{% endblock %}
