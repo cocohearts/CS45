@@ -79,38 +79,6 @@ def savescore():
 
     return "done"
 
-def SQL_Query(query, queryVars):
-    cursor = mysql.connection.cursor()
-    cursor.execute(query, queryVars)
-    mysql.connection.commit()
-    data = cursor.fetchall()
-    return data
-
-# def createaccount(email_id, username):
-#     cursor = mysql.connection.cursor()
-#     query = "INSERT INTO `alexzhao_scores`(`email_id`, `username`) VALUES (%s,%s)"
-#     queryVars = (email_id,username)
-#     cursor.execute(query, queryVars)
-#     mysql.connection.commit()
-
-# def gethistory(email_id):
-#     cursor = mysql.connection.cursor()
-#     query = "SELECT * FROM `alexzhao_scores` WHERE email_id=%s;"
-#     queryVars = (email_id)
-#     cursor.execute(query, queryVars)
-#     mysql.connection.commit()
-#     data = cursor.fetchall()
-#     return data
-
-# def getusername(email_id):
-#     cursor = mysql.connection.cursor()
-#     query = "SELECT * FROM `alexzhao_accounts` WHERE email_id=%s;"
-#     queryVars = (email_id)
-#     cursor.execute(query, queryVars)
-#     mysql.connection.commit()
-#     data = cursor.fetchall()
-#     return data
-
 @app.route('/leaderboard', methods=['POST'])
 def leaderboard():
     logged_in = Boolean('email' in flask.session)
@@ -133,7 +101,7 @@ def leaderboard():
 
 @app.route('/profile', methods=['GET'])
 def profile():
-    logged_in = Boolean('email' in flask.session)
+    logged_in = Boolean('id' in flask.session)
     if logged_in:
         if not verify():
             flask.session.clear()
@@ -152,12 +120,20 @@ def profile():
             "SELECT * FROM `alexzhao_scores` WHERE email=%s;",
             (email,)
         )
-    else:
-        email, history, username = None
-    
-    return render_template('profile.html.j2',loggedIn = logged_in, email = email, history=history, username=username)
+        print(history)
 
-@app.route('/oauth2', methods = ['POST'])
+        game_list = []
+        for game_map in history:
+            new_time = game_map['score_datetime'].strftime("%I:%M %p on %B %d, %Y")
+            new_game = [new_time, game_map['score']]
+            game_list.append(new_game)
+    else:
+        email, game_list, username = None
+    
+    print(game_list)
+    return render_template('profile.html.j2',loggedIn = logged_in, email = email, game_list=game_list, username=username)
+
+@app.route('/oauth2', methods = ['POST','GET'])
 def oauth2():
     token = request.values.get("token")
 
@@ -204,17 +180,22 @@ def verify():
 
 def get_ordinal(n):
     # copied
-    '''
-    Convert an integer into its ordinal representation::
-
-        make_ordinal(0)   => '0th'
-        make_ordinal(3)   => '3rd'
-        make_ordinal(122) => '122nd'
-        make_ordinal(213) => '213th'
-    '''
-    n = int(n)
     if 11 <= (n % 100) <= 13:
         suffix = 'th'
     else:
         suffix = ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
     return str(n) + suffix
+
+def SQL_Query(query, queryVars):
+    cursor = mysql.connection.cursor()
+    cursor.execute(query, queryVars)
+    mysql.connection.commit()
+    data = cursor.fetchall()
+    return data
+
+def convert_time(raw_datetime):
+    try:
+        my_datetime = datetime.strptime(raw_datetime,'%Y-%m-%dT%H:%M')
+        return my_datetime.strftime("%I:%M %p on %B %d, %Y")
+    except:
+        return None

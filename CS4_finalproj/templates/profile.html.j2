@@ -9,7 +9,15 @@
 User Profile
 </h1>
 {% if loggedIn %}
-Your email is {{email}}.
+Your email is {{email}}. Past scores:
+<table>
+    {% for game in game_list %}
+    <tr>
+        <td>{{game[0]}}</td>
+        <td>{{game[1]}}</td>
+    </tr>
+    {% endfor %}
+</table>
 {% else %}
 Not logged in. Log in <a id="login_link" href="./login">here.</a>
 {% endif %}

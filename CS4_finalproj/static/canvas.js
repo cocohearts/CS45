@@ -104,5 +104,8 @@ window.mouseClicked = function() {
         myCanvas.started = true;
         var return_link = document.getElementById("return_link");
         return_link.style.display = "block";
+
+        var spacer = document.getElementById("horizontal_spacer")        
+        spacer.style.display = 'none';
     }
 }

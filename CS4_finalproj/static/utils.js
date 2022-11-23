@@ -124,9 +124,7 @@ function show_results(score) {
     var resultsForm = document.getElementById("results_form");
     var returnLink = document.getElementById("return_link");
     var resultsButton = document.getElementById("results_button");
-    var spacer = document.getElementById("horizontal_spacer")
     
-    spacer.style.display = 'none';
     resultsButton.style.display = 'block';
     resultsButton.innerHTML = 'See how you stack up!'
     returnLink.style.display = 'block';
