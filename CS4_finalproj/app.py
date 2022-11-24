@@ -4,10 +4,8 @@ from xmlrpc.client import Boolean
 from flask import Flask, render_template, request
 from flask_mysqldb import MySQL
 import flask
-import json
 from google.oauth2 import id_token
 from google.auth.transport import requests
-import pprint
 from datetime import datetime
 
 app = Flask(__name__)
@@ -49,15 +47,14 @@ Login pages:
 
 @app.route('/')
 def index():
+    flask.session['score'] = None
     logged_in = Boolean('email' in flask.session)
-    # logged_in = False
-    # print(flask.session['email'])
     return render_template('index.html.j2',loggedIn = logged_in)
 
 @app.route('/logout')
 def logout():
     flask.session.clear()
-    return flask.redirect("../", code=302)
+    return flask.redirect("/", code=302)
 
 @app.route('/savescore', methods=['POST'])
 def savescore():
@@ -68,10 +65,7 @@ def savescore():
         flask.session['score'] = score
 
     if ('email' in flask.session):
-        email_id = flask.session['id']
         email = flask.session['email']
-        nowstring = datetime.now().strftime('%Y-%m-%dT%H:%M')
-        print([str(email_id),datetime.now(),score])
         SQL_Query(
             "INSERT INTO `alexzhao_scores`(`email`, `score_datetime`, `score`) VALUES (%s,%s,%s)",
             (email,datetime.now(),score,)
@@ -79,37 +73,49 @@ def savescore():
 
     return "done"
 
-@app.route('/leaderboard', methods=['POST'])
+@app.route('/leaderboard', methods=['POST','GET'])
 def leaderboard():
     logged_in = Boolean('email' in flask.session)
     history = None
-    score = request.values.get("score")
-    flask.session['score'] = str(score)
-    play_pos = "1st"
+    score = None
+    play_pos = None
+
     if logged_in:
         if not verify():
             flask.session.clear()
-            return render_template('/')
+            return flask.redirect("/", code=302)
+
         history = SQL_Query(
             "SELECT * FROM `alexzhao_scores` WHERE email=%s;",
             (flask.session['email'],)
         )
-        play_pos = get_ordinal(len(history))
 
+    if ('score' in flask.session):
+        score = flask.session['score']
+        if history and score:
+            play_pos = get_ordinal(len(history))
+    
+    leaderboard = SQL_Query(
+        "SELECT scores.score, accounts.username, scores.score_datetime FROM `alexzhao_scores` scores JOIN `alexzhao_accounts` accounts ON scores.email = accounts.email ORDER BY score DESC LIMIT 10;",
+        ()
+    )
+    leaderboard_list = []
+    for game_map in leaderboard:
+        new_time = game_map['score_datetime'].strftime("%I:%M %p on %B %d, %Y")
+        new_game = [game_map['username'], game_map['score'], new_time]
+        leaderboard_list.append(new_game)
 
-    return render_template('leaderboard.html.j2',score=score, play_ordinal=play_pos,loggedIn=logged_in,history=history)
+    return render_template('leaderboard.html.j2',score=score, play_ordinal=play_pos,loggedIn=logged_in,leaderboard=leaderboard_list)
 
 @app.route('/profile', methods=['GET'])
 def profile():
-    logged_in = Boolean('id' in flask.session)
+    logged_in = Boolean('email' in flask.session)
     if logged_in:
         if not verify():
             flask.session.clear()
             return render_template('/')
 
         email = flask.session['email']
-        email_id = flask.session['id']
-        # print(email_id)
         account = SQL_Query(
             "SELECT * FROM `alexzhao_accounts` WHERE email=%s;",
             (email,)
@@ -141,10 +147,8 @@ def oauth2():
         idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
         flask.session['token'] = token
 
-        email_id = idinfo['sub']
         email = idinfo['email']
 
-        flask.session['id'] = email_id
         flask.session['email'] = email
 
         account = SQL_Query(

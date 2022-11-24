@@ -62,30 +62,19 @@ h1 {
 }
 
 #results_button {
-    background-color: black;
-    border: none;
-    color: white;
-    width: 33.3333%;
-    /* width: 30%; */
-    /* display: none; */
-    float: center;
-    /* display: inline-block; */
+    display:block;
+    text-align:center;
     font-size: 36px;
-}
-
-#results_button:hover {
-    text-decoration: underline;
+    color: white;
 }
 
 #profile_link {
-    background-color: black;
     border: none;
     color: white;
     width: 30%;
     display: none;
     text-align: right;
     float: right;
-    /* display: inline-block; */
     font-size: 36px;
     padding-right: 40px;
 }
@@ -95,4 +84,16 @@ h1 {
     align-items: center;
     justify-content: center;
     padding: 100px;
+}
+
+
+.columns {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.column {
+flex: 33.33%;
 }

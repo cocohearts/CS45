@@ -10,29 +10,31 @@
 
 {% block body %}
     {% if not loggedIn %}
-        <a id="login_logout" href="./login">Login</a>
+        <a id="login_logout" href="/login">Login</a>
     {% else %}
-        <a id="login_logout" href="./logout">Logout</a>
+        <a id="login_logout" href="/logout">Logout</a>
     {% endif %}
-    
 
     <div id="game_container"></div>
 
-    <form id = "results_form" action="leaderboard" method="POST">
-        <div id="horizontal_spacer"></div>
+<div class="columns">
+   <div class="column">
         <a id="return_link" href="./">Restart</a>
+   </div>
+   <div class="column">
+        <a id="results_button" href="./leaderboard">Leaderboard</a>
+  </div>
+  <div class="column">
         <a id="profile_link" href="./profile">Profile</a>
-        <button id = "results_button" type="submit" name="score" value=-1 class="link-button">
-            Leaderboard
-        </button>
-    </form>
+  </div>
+</div>
 
-    <script type="module" src="./static/canvas.js"></script>
+<script type="module" src="./static/canvas.js"></script>
 
-    {% if loggedIn %}
-        <script>
-            var profileLink = document.getElementById("profile_link");
-            profileLink.style.display = 'block';
-        </script>
-    {% endif %}
+{% if loggedIn %}
+    <script>
+        var profileLink = document.getElementById("profile_link");
+        profileLink.style.display = 'block';
+    </script>
+{% endif %}
 {% endblock %}

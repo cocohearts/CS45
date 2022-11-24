@@ -10,16 +10,27 @@ Leaderboard
 </h1>
 
 <p>
+    {% if score != None %}
     Your score was {{score}}.
-    {% if loggedIn %}
-        This was your {{play_ordinal}} playthrough!
-    {% else %}
+    {% endif %}
+
+    {% if play_ordinal != None %}
+    This was your {{play_ordinal}} playthrough!
+    {% endif %}
+
+    {% if not loggedIn %}
         Log in to save your scores and see past scores.
     {% endif %}
 </p>
 
-{% block scripts %}
-    <script src="./static/login.js"></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-{% endblock %}
+<table>
+    {% for game in leaderboard %}
+    <tr>
+        <td>{{game[0]}}</td>
+        <td>{{game[1]}}</td>
+        <td>{{game[2]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
 {% endblock %}
