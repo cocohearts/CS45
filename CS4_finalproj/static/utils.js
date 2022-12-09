@@ -56,42 +56,11 @@ class Button {
 
         fill(this.col);
         circle(this.x * this.m + this.b, this.y, this.size);
-        // fill(0);
         erase();
         circle(this.x * this.m + this.b, this.y, 2 * this.size / 3);
         noErase();
         fill(this.col);
         circle(this.x * this.m + this.b, this.y, this.size / 3);
-    }
-}
-
-function initialize_tilearr() {
-    var result = null;
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", './static/tiles.txt', false);
-    xhttp.send();
-    var tile_vals = [];
-    result = xhttp.responseText;
-    for (var tile_line of result.split(/\r?\n/)) {
-        if (tile_line.length >= 1) {
-            let str_tile_val = tile_line.split(" ");
-            tile_vals.push([parseFloat(str_tile_val[0]),parseFloat(str_tile_val[1])]);
-        }
-    }
-    // tile_arr = tile_vals;
-    return tile_vals;
-}
-
-function log_out() {
-    var xhttp = new XMLHttpRequest();
-
-    xhttp.open("POST","/oauth2",true);
-    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhttp.send();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            window.location.assign('/');
-        }
     }
 }
 class CanvasSpecs {
@@ -125,6 +94,22 @@ class CanvasSpecs {
     }
 }
 
+function initialize_tilearr() {
+    var result = null;
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", './static/tiles.txt', false);
+    xhttp.send();
+    var tile_vals = [];
+    result = xhttp.responseText;
+    for (var tile_line of result.split(/\r?\n/)) {
+        if (tile_line.length >= 1) {
+            let str_tile_val = tile_line.split(" ");
+            tile_vals.push([parseFloat(str_tile_val[0]),parseFloat(str_tile_val[1])]);
+        }
+    }
+    return tile_vals;
+}
+
 function size_initalize(myCanvasSpecs, tileArray, buttonArray) {
     let width = myCanvasSpecs.width;
     let height = myCanvasSpecs.height;
@@ -134,7 +119,6 @@ function size_initalize(myCanvasSpecs, tileArray, buttonArray) {
     let button_size = 0.12 * width;
     let tile_size = 0.08 * width;
     let tile_speed = 0.0125 * width;
-    let height_factor = 0.0025 * height;
     for (let tile of tileArray) {
         tile.m = m;
         tile.b = b;
@@ -156,14 +140,18 @@ function postScores(score) {
     xhttp.open("POST","/savescore",true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-    // let xparams = `{
-    //     "score" : ${score}
-    // }`;
     xhttp.send("score="+score);
+}
 
+function log_out() {
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.open("POST","/oauth2",true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.send();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            console.log("score_post" + this.responseText);
+            window.location.assign('/');
         }
     }
 }

@@ -1,7 +1,7 @@
 {% extends 'base.html.j2' %}
 
 {% block title %}
-    Title
+    Cyberpunk Rhythm
 {% endblock %}
 
 {% block scripts %}
@@ -9,24 +9,31 @@
 {% endblock %}
 
 {% block body %}
-    {% if not loggedIn %}
-        <a id="login_logout" href="/login">Login</a>
-    {% else %}
-        <a id="login_logout" href="/logout">Logout</a>
-    {% endif %}
+    <div class="top_right_link">
+        {% if not loggedIn %}
+        <a class="link" href="/login">Login</a>
+        {% else %}
+        <a class="link" id="profile_link" href="/profile">Profile</a>
+        {% endif %}
+    </div>
+
+    <div class="top_left_link">
+        <a class="link" href="./help">Help</a>
+    </div>
 
     <div id="game_container"></div>
 
-<div class="columns">
-   <div class="column">
+<div class="index_links">
+    <div class="index_link">
         <a id="return_link" href="./">Restart</a>
-   </div>
-   <div class="column">
-        <a id="results_button" href="./leaderboard">Leaderboard</a>
-  </div>
-  <div class="column">
-        <a id="profile_link" href="./profile">Profile</a>
-  </div>
+    </div>
+
+    <div class="index_link">
+        <a id="leaderboard_link" href="./leaderboard">Leaderboard</a>
+    </div>
+
+    <div class="index_link">
+    </div>
 </div>
 
 <script type="module" src="./static/canvas.js"></script>

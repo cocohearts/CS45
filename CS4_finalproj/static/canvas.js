@@ -1,6 +1,6 @@
-import { Tile, Button, initialize_tilearr, CanvasSpecs, size_initalize, postScores } from './utils.js';
+import * as utils from './utils.js';
 
-let myCanvas = new CanvasSpecs();
+let myCanvas = new utils.CanvasSpecs();
 let song;
 
 window.preload = function() {
@@ -10,27 +10,25 @@ window.preload = function() {
 window.setup = function() {
     noStroke();
     var canvas_height = Math.min(9*window.innerWidth/13, window.innerHeight) * 0.9;
-    var canvas_width = 13 * canvas_height/9;
+    var canvas_width = 13/9 * canvas_height;
     myCanvas.height = canvas_height;
     myCanvas.width = canvas_width;
     let myCanvasObj = createCanvas(canvas_width, canvas_height);
     myCanvasObj.parent('game_container');
-    size_initalize(myCanvas,tileArray,buttonArray);
+    utils.size_initalize(myCanvas,tileArray,buttonArray);
 }
 
 var tileArray = [];
-var strTileArray = initialize_tilearr();
+var strTileArray = utils.initialize_tilearr();
 var buttonArray = [];
 
 for (let index = 1; index <= 4; index++) {
-    buttonArray.push(new Button(index,myCanvas.button_color_list[index-1]));
+    buttonArray.push(new utils.Button(index,myCanvas.button_color_list[index-1]));
 }
 
 for (let int_tile_val of strTileArray) {
-    tileArray.push(new Tile(int_tile_val[0],int_tile_val[1],myCanvas.color_dict[int_tile_val[0]],5,0,0,0));
+    tileArray.push(new utils.Tile(int_tile_val[0],int_tile_val[1],myCanvas.color_dict[int_tile_val[0]],5,0,0,0));
 }
-
-console.log(strTileArray);
 
 window.draw = function() {
     background('black');
@@ -42,13 +40,14 @@ window.draw = function() {
         fill('white');
         textAlign(CENTER);
         textSize(0.08 * height);
-        text("click here or press spacebar to start",width*0.1,height*0.53,width*0.8,height*0.4);
+        text("volume on                          press space to start",width*0.1,height*0.53,width*0.8,height*0.4);
         return;
     }
 
     for (let button of buttonArray) {
         button.buttonDraw();
     }
+
     if (tileArray.at(-1).y <= height) {
         for (let tile of tileArray) {
             tile.tileUpdate();
@@ -56,21 +55,16 @@ window.draw = function() {
         }
     } else if (!myCanvas.finished) {
         myCanvas.finished = true;
-        postScores(Math.round(myCanvas.score));
+        utils.postScores(Math.round(myCanvas.score));
     }
+
     fill('white');
     textSize(0.1 * height);
     text("score: " + Math.round(myCanvas.score).toString(),0.5*width,0.965*height);
 }
 
 window.keyTyped = function() {
-    if (!(myCanvas.keys.includes(window.key))) {
-        return;
-    }
-    if (!myCanvas.started) {
-        return;
-    }
-    if (tileArray.at(-1).y > height) {
+    if (!myCanvas.started || !(myCanvas.keys.includes(window.key)) || tileArray.at(-1).y > height) {
         return;
     }
 
@@ -100,13 +94,12 @@ window.keyTyped = function() {
         }
     }
 
-    let distances = [];
+    let distance = Number.POSITIVE_INFINITY;
     for (let index of nearby_indices) {
-        distances.push(Math.abs(tileArray[index].y - button_height));
+        distance = Math.min(distance, Math.abs(tileArray[index].y - button_height));
     }
-    let distance = Math.min(...distances);
     
-    myCanvas.score += 22 * (2 ** (-0.01 * distance ** 2)) - 2;
+    myCanvas.score += 22 * (2 ** (-0.004 * distance ** 2)) - 1;
 }
 
 window.mouseClicked = function() {

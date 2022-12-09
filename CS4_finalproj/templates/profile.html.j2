@@ -1,42 +1,48 @@
 {% extends "base.html.j2" %}
 
 {% block title %}
-    Profile
+    Cyberpunk Rhythm: Profile
 {% endblock %}
 
 {% block body %}
 <h1>
-User Profile
+Profile
 </h1>
 
 <div class="top_left_link">
-    <a class="link" href="./leaderboard">Leaderboard</a>
-</div>
-
-<div class="top_right_link">
     <a class="link" href="./">Game</a>
 </div>
 
+<div class="top_right_link">
+    <a class="link" href="./logout">Logout</a>
+</div>
+
 {% if loggedIn %}
-<p>
-    You are logged in as <em>{{email}}</em> and your username is <em>{{username}}</em>. 
-    <a href="./username">Change your username</a>
-</p>
+    <p>
+        You are logged with the email <em>{{email}}</em> and your username is <em>{{username}}</em>.
+        <a href="./username">Change your username</a>
+    </p>
 
-<p>
-    Past scores:
-</p>
+    {% if game_list %}
+        <p> Past scores: </p>
 
-<table>
-    {% for game in game_list %}
-    <tr>
-        <td>{{game[0]}}</td>
-        <td>{{game[1]}}</td>
-    </tr>
-    {% endfor %}
-</table>
+        <table>
+            {% for game in game_list %}
+            <tr>
+                <td>{{game[0]}}</td>
+                <td>{{game[1]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    {% else %}
+        <p> You have not finished any games yet. </p>
+
+    {% endif %}
+
 {% else %}
-Not logged in. Log in <a id="login_link" href="./login">here.</a>
+    Not logged in. Log in <a id="login_link" href="./login">here.</a>
+
 {% endif %}
 
 {% endblock %}

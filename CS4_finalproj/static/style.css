@@ -45,18 +45,6 @@ a:hover {
     color: white;
 }
 
-#login_logout {
-    background-color: black;
-    border: none;
-    color: white;
-    width: 10%;
-    margin-top: 20px;
-    text-align: right;
-    float: right;
-    font-size: 36px;
-    padding-right: 40px;
-}
-
 #login_info {
     text-align: center;
 }
@@ -71,28 +59,11 @@ a:hover {
     padding-left: 40px;
 }
 
-#horizontal_spacer {
-    width: 33.3333%;
-    padding: 10px;
-    float: left;
-}
-
-#results_button {
+#leaderboard_link {
     display:block;
     text-align:center;
     font-size: 36px;
     color: white;
-}
-
-#profile_link {
-    border: none;
-    color: white;
-    width: 30%;
-    display: none;
-    text-align: right;
-    float: right;
-    font-size: 36px;
-    padding-right: 40px;
 }
 
 #login-container {

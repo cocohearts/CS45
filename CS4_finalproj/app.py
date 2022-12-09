@@ -51,31 +51,10 @@ def index():
     logged_in = Boolean('email' in flask.session)
     return render_template('index.html.j2',loggedIn = logged_in)
 
-@app.route('/logout')
-def logout():
-    flask.session.clear()
-    return flask.redirect("/", code=302)
-
-@app.route('/savescore', methods=['POST'])
-def savescore():
-    score = request.values.get("score")
-    if score == -1:
-        score = None
-    else:
-        flask.session['score'] = score
-
-    if ('email' in flask.session):
-        email = flask.session['email']
-        SQL_Query(
-            "INSERT INTO `alexzhao_scores`(`email`, `score_datetime`, `score`) VALUES (%s,%s,%s)",
-            (email,datetime.now(),score,)
-        )
-
-    return "done"
-
 @app.route('/leaderboard', methods=['POST','GET'])
 def leaderboard():
     logged_in = Boolean('email' in flask.session)
+
     history = None
     score = None
     play_pos = None
@@ -93,7 +72,7 @@ def leaderboard():
     if ('score' in flask.session):
         score = flask.session['score']
         if history and score:
-            play_pos = get_ordinal(len(history))
+            play_pos = ordinal(len(history))
     
     leaderboard = SQL_Query(
         "SELECT scores.score, accounts.username, scores.score_datetime FROM `alexzhao_scores` scores JOIN `alexzhao_accounts` accounts ON scores.email = accounts.email ORDER BY score DESC LIMIT 10;",
@@ -149,6 +128,43 @@ def profile():
     print(game_list)
     return render_template('profile.html.j2',loggedIn = logged_in, email = email, game_list=game_list[::-1], username=username)
 
+@app.route('/login', methods=['GET'])
+def login():
+    logged_in = Boolean('email' in flask.session)
+    return render_template('login.html.j2',loggedIn=logged_in)
+
+@app.route('/username', methods=['GET'])
+def username():
+    logged_in = Boolean('email' in flask.session)
+    return render_template('username.html.j2',loggedIn=logged_in)
+
+@app.route('/help', methods=['GET'])
+def help():
+    logged_in = Boolean('email' in flask.session)
+    return render_template('help.html.j2',logged_in=logged_in)
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    flask.session.clear()
+    return flask.redirect("/", code=302)
+
+@app.route('/savescore', methods=['POST'])
+def savescore():
+    score = request.values.get("score")
+    if score == -1:
+        score = None
+    else:
+        flask.session['score'] = score
+
+    if ('email' in flask.session):
+        email = flask.session['email']
+        SQL_Query(
+            "INSERT INTO `alexzhao_scores`(`email`, `score_datetime`, `score`) VALUES (%s,%s,%s)",
+            (email,datetime.now(),score,)
+        )
+
+    return "complete"
+
 @app.route('/oauth2', methods = ['POST','GET'])
 def oauth2():
     token = request.values.get("token")
@@ -165,6 +181,7 @@ def oauth2():
             "SELECT * FROM `alexzhao_accounts` WHERE email=%s;",
             (email,)
         )
+
         if (not account):
             SQL_Query(
                 "INSERT INTO `alexzhao_accounts`(`email`, `username`) VALUES (%s,%s)",
@@ -175,21 +192,6 @@ def oauth2():
         print("Invalid token")
     
     return "complete"
-
-@app.route('/login', methods=['GET'])
-def login():
-    logged_in = Boolean('email' in flask.session)
-    return render_template('login.html.j2',loggedIn=logged_in)
-
-@app.route('/username', methods=['GET'])
-def username():
-    logged_in = Boolean('email' in flask.session)
-    return render_template('username.html.j2',loggedIn=logged_in)
-
-@app.route('/help', methods=['GET'])
-def help():
-    logged_in = Boolean('email' in flask.session)
-    return render_template('help.html.j2',logged_in=logged_in)
 
 def verify():
     token = flask.session['token']
@@ -202,15 +204,17 @@ def verify():
     except:
         return False
 
-def get_ordinal(n):
-    # copied
+def ordinal(n):
     if 11 <= (n % 100) <= 13:
         suffix = 'th'
+
     else:
-        suffix = ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
+        suffixes = ['th', 'st', 'nd', 'rd', 'th']
+        suffix = suffixes[min(4, n % 10)]
+
     return str(n) + suffix
 
-def SQL_Query(query, queryVars):
+def SQL_Query(query, queryVars=()):
     cursor = mysql.connection.cursor()
     cursor.execute(query, queryVars)
     mysql.connection.commit()
@@ -221,5 +225,6 @@ def convert_time(raw_datetime):
     try:
         my_datetime = datetime.strptime(raw_datetime,'%Y-%m-%dT%H:%M')
         return my_datetime.strftime("%I:%M %p on %B %d, %Y")
+
     except:
         return None
