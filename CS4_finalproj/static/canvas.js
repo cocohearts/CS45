@@ -1,6 +1,11 @@
-import { Tile, Button, load_tiles, CanvasSpecs, show_results, size_initalize, postScores } from './utils.js';
+import { Tile, Button, initialize_tilearr, CanvasSpecs, size_initalize, postScores } from './utils.js';
 
 let myCanvas = new CanvasSpecs();
+let song;
+
+window.preload = function() {
+    song = loadSound('static/my_music.mp3');
+}
 
 window.setup = function() {
     noStroke();
@@ -14,27 +19,30 @@ window.setup = function() {
 }
 
 var tileArray = [];
-var strTileArray = load_tiles();
+var strTileArray = initialize_tilearr();
 var buttonArray = [];
 
 for (let index = 1; index <= 4; index++) {
     buttonArray.push(new Button(index,myCanvas.button_color_list[index-1]));
 }
+
 for (let int_tile_val of strTileArray) {
     tileArray.push(new Tile(int_tile_val[0],int_tile_val[1],myCanvas.color_dict[int_tile_val[0]],5,0,0,0));
 }
 
+console.log(strTileArray);
+
 window.draw = function() {
     background('black');
+    frameRate(60);
     let width = myCanvas.width;
     let height = myCanvas.height;
-    let button_height = buttonArray[0].y;
 
     if (!myCanvas.started) {
         fill('white');
         textAlign(CENTER);
         textSize(0.08 * height);
-        text("click here to start",width*0.1,height*0.53,width*0.8,height*0.4);
+        text("click here or press spacebar to start",width*0.1,height*0.53,width*0.8,height*0.4);
         return;
     }
 
@@ -48,7 +56,6 @@ window.draw = function() {
         }
     } else if (!myCanvas.finished) {
         myCanvas.finished = true;
-        show_results(Math.round(myCanvas.score));
         postScores(Math.round(myCanvas.score));
     }
     fill('white');
@@ -58,6 +65,9 @@ window.draw = function() {
 
 window.keyTyped = function() {
     if (!(myCanvas.keys.includes(window.key))) {
+        return;
+    }
+    if (!myCanvas.started) {
         return;
     }
     if (tileArray.at(-1).y > height) {
@@ -96,16 +106,30 @@ window.keyTyped = function() {
     }
     let distance = Math.min(...distances);
     
-    myCanvas.score += 300/(distance+5)-2;
+    myCanvas.score += 22 * (2 ** (-0.01 * distance ** 2)) - 2;
 }
 
 window.mouseClicked = function() {
     if (mouseX <= myCanvas.width && mouseX >= 0 && mouseY <= myCanvas.height && mouseY >= 0) {
-        myCanvas.started = true;
-        var return_link = document.getElementById("return_link");
-        return_link.style.display = "block";
+        if (!myCanvas.started) {
+            song.play();
+            myCanvas.started = true;
+            var return_link = document.getElementById("return_link");
+            return_link.style.display = "block";
+        }
+    }
+}
 
-        var spacer = document.getElementById("horizontal_spacer")        
-        spacer.style.display = 'none';
+window.keyPressed = function() {
+    if (window.key == ' ') {
+        if (myCanvas.started) {
+            window.location.reload();
+        }
+        else {
+            song.play();
+            myCanvas.started = true;
+            var return_link = document.getElementById("return_link");
+            return_link.style.display = "block";
+        }
     }
 }

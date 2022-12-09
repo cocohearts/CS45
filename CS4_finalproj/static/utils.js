@@ -65,7 +65,7 @@ class Button {
     }
 }
 
-function load_tiles() {
+function initialize_tilearr() {
     var result = null;
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", './static/tiles.txt', false);
@@ -75,9 +75,10 @@ function load_tiles() {
     for (var tile_line of result.split(/\r?\n/)) {
         if (tile_line.length >= 1) {
             let str_tile_val = tile_line.split(" ");
-            tile_vals.push([parseInt(str_tile_val[0]),parseInt(str_tile_val[1])]);
+            tile_vals.push([parseFloat(str_tile_val[0]),parseFloat(str_tile_val[1])]);
         }
     }
+    // tile_arr = tile_vals;
     return tile_vals;
 }
 
@@ -112,23 +113,16 @@ class CanvasSpecs {
             's' : 2,
             'd' : 3,
             'f' : 4,
+            'j' : 1,
+            'k' : 2,
+            'l' : 3,
+            ';' : 4
         }
-        this.keys = ['a', 's', 'd', 'f'];
+        this.keys = ['a', 's', 'd', 'f','j','k','l',';'];
         this.score = 0;
         this.started = false;
         this.finished = false;
     }
-}
-
-function show_results(score) {
-    var resultsForm = document.getElementById("results_form");
-    var returnLink = document.getElementById("return_link");
-    var resultsButton = document.getElementById("results_button");
-    
-    resultsButton.style.display = 'block';
-    resultsButton.innerHTML = 'See how you stack up!'
-    returnLink.style.display = 'block';
-    resultsButton.setAttribute("value", score);
 }
 
 function size_initalize(myCanvasSpecs, tileArray, buttonArray) {
@@ -146,7 +140,7 @@ function size_initalize(myCanvasSpecs, tileArray, buttonArray) {
         tile.b = b;
         tile.size = tile_size;
         tile.speed = tile_speed;
-        tile.y *= height_factor;
+        tile.y = button_height - (60 * tile_speed * tile.y);
     }
     for (let button of buttonArray) {
         button.m = m;
@@ -174,4 +168,4 @@ function postScores(score) {
     }
 }
 
-export { Tile, Button, load_tiles, CanvasSpecs, show_results, size_initalize, postScores, log_out };
+export { Tile, Button, initialize_tilearr, CanvasSpecs, size_initalize, postScores, log_out };

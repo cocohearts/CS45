@@ -8,8 +8,25 @@
 <h1>
 User Profile
 </h1>
+
+<div class="top_left_link">
+    <a class="link" href="./leaderboard">Leaderboard</a>
+</div>
+
+<div class="top_right_link">
+    <a class="link" href="./">Game</a>
+</div>
+
 {% if loggedIn %}
-Your email is {{email}}. Past scores:
+<p>
+    You are logged in as <em>{{email}}</em> and your username is <em>{{username}}</em>. 
+    <a href="./username">Change your username</a>
+</p>
+
+<p>
+    Past scores:
+</p>
+
 <table>
     {% for game in game_list %}
     <tr>

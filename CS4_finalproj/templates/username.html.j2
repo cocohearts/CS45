@@ -1,0 +1,23 @@
+{% extends "base.html.j2" %}
+
+{% block title %}
+    Leaderboard
+{% endblock %}
+
+{% block body %}
+<h1>
+New Username
+</h1>
+
+<div class="top_right_link">
+    <a class="link" href="./profile">Cancel</a>
+</div>
+
+<div id="username_form_div">
+    <form id="username_form" method="POST" action="profile">
+        <input type="text" name="new_username" required>
+        <input id="submitbutton" type="submit" value="Submit!">
+    </form>
+</div>
+
+{% endblock %}

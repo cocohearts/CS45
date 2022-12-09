@@ -101,13 +101,13 @@ def leaderboard():
     )
     leaderboard_list = []
     for game_map in leaderboard:
-        new_time = game_map['score_datetime'].strftime("%I:%M %p on %B %d, %Y")
+        new_time = game_map['score_datetime'].strftime("%I:%M %p, %m/%d/%Y")
         new_game = [game_map['username'], game_map['score'], new_time]
         leaderboard_list.append(new_game)
 
     return render_template('leaderboard.html.j2',score=score, play_ordinal=play_pos,loggedIn=logged_in,leaderboard=leaderboard_list)
 
-@app.route('/profile', methods=['GET'])
+@app.route('/profile', methods=['GET','POST'])
 def profile():
     logged_in = Boolean('email' in flask.session)
     if logged_in:
@@ -116,6 +116,14 @@ def profile():
             return render_template('/')
 
         email = flask.session['email']
+
+        if flask.request.method == 'POST':
+            username = flask.request.values.get('new_username')
+            SQL_Query(
+                "UPDATE `alexzhao_accounts` SET `username`=%s WHERE `email`=%s",
+                (username,email)
+            )
+
         account = SQL_Query(
             "SELECT * FROM `alexzhao_accounts` WHERE email=%s;",
             (email,)
@@ -134,10 +142,12 @@ def profile():
             new_game = [new_time, game_map['score']]
             game_list.append(new_game)
     else:
-        email, game_list, username = None
+        email = None
+        game_list = None
+        username = None
     
     print(game_list)
-    return render_template('profile.html.j2',loggedIn = logged_in, email = email, game_list=game_list, username=username)
+    return render_template('profile.html.j2',loggedIn = logged_in, email = email, game_list=game_list[::-1], username=username)
 
 @app.route('/oauth2', methods = ['POST','GET'])
 def oauth2():
@@ -170,6 +180,16 @@ def oauth2():
 def login():
     logged_in = Boolean('email' in flask.session)
     return render_template('login.html.j2',loggedIn=logged_in)
+
+@app.route('/username', methods=['GET'])
+def username():
+    logged_in = Boolean('email' in flask.session)
+    return render_template('username.html.j2',loggedIn=logged_in)
+
+@app.route('/help', methods=['GET'])
+def help():
+    logged_in = Boolean('email' in flask.session)
+    return render_template('help.html.j2',logged_in=logged_in)
 
 def verify():
     token = flask.session['token']
