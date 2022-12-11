@@ -1,6 +1,3 @@
-from ast import excepthandler
-from pickle import TRUE
-from xmlrpc.client import Boolean
 from flask import Flask, render_template, request
 from flask_mysqldb import MySQL
 import flask
@@ -12,7 +9,7 @@ app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'mysql.2223.lakeside-cs.org'
 app.config['MYSQL_USER'] = 'student2223'
 app.config['MYSQL_PASSWORD'] = 'm545CS42223'
-app.config['MYSQL_DB'] = '2223project'
+app.config['MYSQL_DB'] = '2223project_1'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 app.secret_key = 'super secret key'
@@ -45,15 +42,15 @@ Login pages:
     Logout does something, redirects to main page
 """
 
-@app.route('/')
+@app.route('/', methods=['POST','GET'])
 def index():
     flask.session['score'] = None
-    logged_in = Boolean('email' in flask.session)
+    logged_in = bool('email' in flask.session)
     return render_template('index.html.j2',loggedIn = logged_in)
 
 @app.route('/leaderboard', methods=['POST','GET'])
 def leaderboard():
-    logged_in = Boolean('email' in flask.session)
+    logged_in = bool('email' in flask.session)
 
     history = None
     score = None
@@ -88,11 +85,11 @@ def leaderboard():
 
 @app.route('/profile', methods=['GET','POST'])
 def profile():
-    logged_in = Boolean('email' in flask.session)
+    logged_in = bool('email' in flask.session)
     if logged_in:
         if not verify():
             flask.session.clear()
-            return render_template('/')
+            return flask.redirect("/", code=302)
 
         email = flask.session['email']
 
@@ -130,23 +127,23 @@ def profile():
 
 @app.route('/login', methods=['GET'])
 def login():
-    logged_in = Boolean('email' in flask.session)
+    logged_in = bool('email' in flask.session)
     return render_template('login.html.j2',loggedIn=logged_in)
 
 @app.route('/username', methods=['GET'])
 def username():
-    logged_in = Boolean('email' in flask.session)
+    logged_in = bool('email' in flask.session)
     return render_template('username.html.j2',loggedIn=logged_in)
 
 @app.route('/help', methods=['GET'])
 def help():
-    logged_in = Boolean('email' in flask.session)
+    logged_in = bool('email' in flask.session)
     return render_template('help.html.j2',logged_in=logged_in)
 
 @app.route('/logout', methods=['GET'])
 def logout():
     flask.session.clear()
-    return flask.redirect("/", code=302)
+    return flask.redirect("./", code=302)
 
 @app.route('/savescore', methods=['POST'])
 def savescore():
@@ -165,7 +162,7 @@ def savescore():
 
     return "complete"
 
-@app.route('/oauth2', methods = ['POST','GET'])
+@app.route('/oauth2', methods = ['POST'])
 def oauth2():
     token = request.values.get("token")
 

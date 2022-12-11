@@ -3,7 +3,7 @@ function handleCredentialResponse(response) {
     console.log(token)
     let xhttp = new XMLHttpRequest();
 
-    xhttp.open("POST","/oauth2",true);
+    xhttp.open("POST","./oauth2",true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
     xhttp.send("token=" + token);

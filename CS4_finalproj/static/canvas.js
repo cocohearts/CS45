@@ -102,17 +102,6 @@ window.keyTyped = function() {
     myCanvas.score += 22 * (2 ** (-0.004 * distance ** 2)) - 1;
 }
 
-window.mouseClicked = function() {
-    if (mouseX <= myCanvas.width && mouseX >= 0 && mouseY <= myCanvas.height && mouseY >= 0) {
-        if (!myCanvas.started) {
-            song.play();
-            myCanvas.started = true;
-            var return_link = document.getElementById("return_link");
-            return_link.style.display = "block";
-        }
-    }
-}
-
 window.keyPressed = function() {
     if (window.key == ' ') {
         if (myCanvas.started) {

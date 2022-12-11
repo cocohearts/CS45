@@ -137,7 +137,7 @@ function size_initalize(myCanvasSpecs, tileArray, buttonArray) {
 function postScores(score) {
     var xhttp = new XMLHttpRequest();
 
-    xhttp.open("POST","/savescore",true);
+    xhttp.open("POST","./savescore",true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
     xhttp.send("score="+score);
