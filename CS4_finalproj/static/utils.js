@@ -1,40 +1,48 @@
 class Tile {
-    constructor(x, y, col, speed, m, b, size) {
-        this.x = x;
-        this.y = y;
-        this.col = col;
-        this.speed = speed;
-        this.m = m;
-        this.b = b;
-        this.size = size;
+    constructor(column, targetTime, color) {
+        this.x = 0;
+        this.y = 0;
+        this.color = color;
+        this.column = column;
+        this.msTargetTime = targetTime * 1000;
+        this.hidden = true;
         this.disappeared = false;
     }
   
-    tileUpdate() {
-        this.y += this.speed;
+    tileUpdate(msElapsedTime,myCanvasSpecs) {
+        let remainingTime = this.msTargetTime - msElapsedTime;
+        if (this.hidden) {
+            if (myCanvasSpecs.buttonHeight + myCanvasSpecs.tileSize > remainingTime * myCanvasSpecs.msSpeed) {
+                this.hidden = false;
+            }
+        }
+        if (!this.hidden) {
+            this.y = myCanvasSpecs.buttonHeight - remainingTime * myCanvasSpecs.msSpeed;
+            if (this.y > myCanvasSpecs.canvasHeight * 1.2) {
+                this.hidden = true;
+            }
+        }
     }
     
-    tileDraw(height) {
-        if (0 < this.y && this.y < height+this.size && !this.disappeared) {
-            fill(this.col);
-            circle(this.x * this.m + this.b, this.y, this.size);
+    tileDraw(myCanvasSpecs) {
+        if (!this.hidden && !this.disappeared) {
+            fill(this.color);
+            circle(this.x, this.y, myCanvasSpecs.tileSize);
             erase();
-            circle(this.x * this.m + this.b, this.y, this.size/2);
+            circle(this.x, this.y, myCanvasSpecs.tileSize/2);
             noErase();
         }
     }
 }
 
 class Button {
-    constructor(x, col) {
-        this.x = x;
+    constructor(column, color) {
+        this.x = 0;
         this.y = 0;
-        this.col = col;
-        this.m = 0;
-        this.b = 0;
-        this.realsize = 0;
-        this.size = 0;
+        this.color = color;
+        this.column = column;
         this.flair = 0;
+        this.size = 0;
     }
     buttonDraw() {
         // flair_len must be odd
@@ -54,15 +62,16 @@ class Button {
             }
         }
 
-        fill(this.col);
-        circle(this.x * this.m + this.b, this.y, this.size);
+        fill(this.color);
+        circle(this.x, this.y, this.size);
         erase();
-        circle(this.x * this.m + this.b, this.y, 2 * this.size / 3);
+        circle(this.x, this.y, 2 * this.size / 3);
         noErase();
-        fill(this.col);
-        circle(this.x * this.m + this.b, this.y, this.size / 3);
+        fill(this.color);
+        circle(this.x, this.y, this.size / 3);
     }
 }
+
 class CanvasSpecs {
     constructor() {
         this.color_dict = {
@@ -91,10 +100,16 @@ class CanvasSpecs {
         this.score = 0;
         this.started = false;
         this.finished = false;
+        this.framerate = 60;
+        this.msSpeed = 0;
+        this.canvasHeight = 0;
+        this.canvasWidth = 0;
+        this.buttonHeight = 0;
+        this.tileSize = 0;
     }
 }
 
-function initialize_tilearr() {
+function readTiles() {
     var result = null;
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", './static/tiles.txt', false);
@@ -110,27 +125,30 @@ function initialize_tilearr() {
     return tile_vals;
 }
 
-function size_initalize(myCanvasSpecs, tileArray, buttonArray) {
-    let width = myCanvasSpecs.width;
-    let height = myCanvasSpecs.height;
-    let m = width * 0.24;
+function arrayInitialize(myCanvasSpecs, tileArray, buttonArray) {
+    let canvasWidth = myCanvasSpecs.canvasWidth;
+    let canvasHeight = myCanvasSpecs.canvasHeight;
+
+    let m = canvasWidth * 0.24;
     let b = width * -0.1;
-    let button_height = 0.75 * height;
-    let button_size = 0.12 * width;
-    let tile_size = 0.08 * width;
-    let tile_speed = 0.0125 * width;
+    let buttonHeight = 0.75 * canvasHeight;
+    let buttonSize = 0.12 * canvasWidth;
+    let tileSize = 0.08 * canvasWidth;
+    let msTileSpeed = 0.00075 * canvasWidth;
+
+    myCanvasSpecs.buttonHeight = buttonHeight;
+    myCanvasSpecs.buttonSize = buttonSize;
+    myCanvasSpecs.msSpeed = msTileSpeed;
+    myCanvasSpecs.tileSize = tileSize;
+
     for (let tile of tileArray) {
-        tile.m = m;
-        tile.b = b;
-        tile.size = tile_size;
-        tile.speed = tile_speed;
-        tile.y = button_height - (60 * tile_speed * tile.y);
+        tile.x = tile.column * m + b;
     }
+
     for (let button of buttonArray) {
-        button.m = m;
-        button.b = b;
-        button.size = button_size;
-        button.y = button_height;
+        button.x = m * button.column + b;
+        button.y = buttonHeight;
+        button.size = buttonSize;
     }
 }
 
@@ -143,17 +161,4 @@ function postScores(score) {
     xhttp.send("score="+score);
 }
 
-function log_out() {
-    var xhttp = new XMLHttpRequest();
-
-    xhttp.open("POST","/oauth2",true);
-    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhttp.send();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            window.location.assign('/');
-        }
-    }
-}
-
-export { Tile, Button, initialize_tilearr, CanvasSpecs, size_initalize, postScores, log_out };
+export { Tile, Button, readTiles, CanvasSpecs, arrayInitialize, postScores };
