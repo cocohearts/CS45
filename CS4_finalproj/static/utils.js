@@ -8,7 +8,8 @@ class Tile {
         this.hidden = true;
         this.disappeared = false;
     }
-  
+
+    // places tile into new location based on elapsed time in ms
     tileUpdate(msElapsedTime,myCanvasSpecs) {
         let remainingTime = this.msTargetTime - msElapsedTime;
         if (this.hidden) {
@@ -25,11 +26,12 @@ class Tile {
     }
     
     tileDraw(myCanvasSpecs) {
+        // checking if the tile has disappeared
         if (!this.hidden && !this.disappeared) {
             fill(this.color);
             circle(this.x, this.y, myCanvasSpecs.tileSize);
             erase();
-            circle(this.x, this.y, myCanvasSpecs.tileSize/2);
+            circle(this.x, this.y, myCanvasSpecs.tileSize / 2);
             noErase();
         }
     }
@@ -44,20 +46,26 @@ class Button {
         this.flair = 0;
         this.size = 0;
     }
+
     buttonDraw() {
         // flair_len must be odd
         let flair_len = 7;
         let flair_factor = 1.1;
+        // 1 is added to the flair to cue
         if (this.flair > 0) {
             if (this.flair < flair_len) {
-                if (this.flair <= flair_len/2) {
+                if (this.flair <= flair_len / 2) {
+                    // first half
                     this.size *= flair_factor;
                 } else {
+                    // second half
                     this.size /= flair_factor;
                 }
-                this.flair++;
+                // increment flair counter
+                this.flair ++;
             }
             else {
+                // reached end of cycle, reset
                 this.flair = 0;
             }
         }
@@ -74,18 +82,21 @@ class Button {
 
 class CanvasSpecs {
     constructor() {
+        // color dictionary for tiles
         this.color_dict = {
             1 : '#FA9FB4',
             2 : '#A2FFC5',
             3 : '#FDFDCB',
             4 : '#C0D0F5'
         }
+        // color list for buttons
         this.button_color_list = [
             '#FF184E',
             '#25E525',
             '#F7F713',
             '#004DFF'
         ]
+        // mapping keys to columns
         this.key_dict = {
             'a' : 1,
             's' : 2,
@@ -96,6 +107,7 @@ class CanvasSpecs {
             'l' : 3,
             ';' : 4
         }
+
         this.keys = ['a', 's', 'd', 'f','j','k','l',';'];
         this.score = 0;
         this.started = false;
@@ -110,12 +122,14 @@ class CanvasSpecs {
 }
 
 function readTiles() {
+    // reads tiles from text file
     var result = null;
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", './static/tiles.txt', false);
     xhttp.send();
     var tile_vals = [];
     result = xhttp.responseText;
+
     for (var tile_line of result.split(/\r?\n/)) {
         if (tile_line.length >= 1) {
             let str_tile_val = tile_line.split(" ");
@@ -158,7 +172,7 @@ function postScores(score) {
     xhttp.open("POST","./savescore",true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-    xhttp.send("score="+score);
+    xhttp.send("score = " + score);
 }
 
 export { Tile, Button, readTiles, CanvasSpecs, arrayInitialize, postScores };

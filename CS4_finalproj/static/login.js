@@ -8,6 +8,7 @@ function handleCredentialResponse(response) {
 
     xhttp.send("token=" + token);
 
+    // redirect to profile after successful login
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             console.log("sign-in succesful" + this.responseText);
