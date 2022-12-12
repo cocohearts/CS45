@@ -17,6 +17,7 @@ html, body {
 h1 {
     text-align: center;
     margin: 50px;
+    font-weight: bold;
 }
 
 table {
@@ -45,32 +46,15 @@ a:hover {
     color: white;
 }
 
-#login_info {
-    text-align: center;
-}
-
-#return_link {
-    display: none;
-    color: white;
-    float: left;
-    /* display: inline-block; */
-    width: 33.3333%;
-    font-size: 36px;
-    padding-left: 40px;
-}
-
-#leaderboard_link {
-    display:block;
-    text-align:center;
-    font-size: 36px;
-    color: white;
-}
-
 #login-container {
     display: flex; 
     align-items: center;
     justify-content: center;
     padding: 100px;
+}
+
+#login_info {
+    text-align: center;
 }
 
 #username_form_div {
@@ -83,9 +67,21 @@ a:hover {
     padding: 40px;
 }
 
+#return_link {
+    display: none;
+    float: left;
+    padding-left: 40px;
+}
+
+#leaderboard_link {
+    display: block;
+    text-align: center;
+}
+
 .link {
     color: white;
     font-size: 36px;
+    font-weight: bold;
 }
 
 .index_links {
