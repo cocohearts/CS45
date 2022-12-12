@@ -1,3 +1,5 @@
+# This program helped to adjust beatmap.txt when I made a manual error
+
 f = open("beatmap.txt","r")
 linelist = f.readlines()
 print(linelist)
